@@ -1,3 +1,4 @@
+using CampusEcomSystemMini.Application.Users.Preferences;
 using CampusEcomSystemMini.Application.Users.Profile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,6 +61,75 @@ public class UsersController : ControllerBase
         var result = await _mediator.Send(
             command,
             cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPost("me/preferences")]
+    public async Task<ActionResult<CreatePreferencesResponse>> CreatePreferences(
+        CreatePreferencesCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            command,
+            cancellationToken);
+
+        if (result is null)
+        {
+            return Conflict(
+                "Preferences already exist.");
+        }
+
+        return Created(
+            "/api/users/me/preferences",
+            result);
+    }
+
+    [HttpGet("me/preferences")]
+    public async Task<ActionResult<GetPreferencesResponse>> GetPreferences(
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new GetPreferencesQuery(),
+            cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpPut("me/preferences")]
+    public async Task<ActionResult<UpdatePreferencesResponse>> UpdatePreferences(
+        UpdatePreferencesCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            command,
+            cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpDelete("me/preferences")]
+    public async Task<ActionResult<DeletePreferencesResponse>> DeletePreferences(
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new DeletePreferencesCommand(),
+            cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
 
         return Ok(result);
     }

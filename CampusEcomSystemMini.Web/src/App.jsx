@@ -10,6 +10,7 @@ import HomePage from "./components/HomePage";
 import UserProfile from "./components/UserProfile";
 import EditProfile from "./components/EditProfile";
 import ChangePassword from "./components/ChangePassword";
+import Preferences from "./components/Preferences";
 
 import {
   getMe,
@@ -26,7 +27,15 @@ import {
   changePassword,
 } from "./services/userService";
 
+import {
+  getPreferences,
+  createPreferences,
+  updatePreferences,
+  deletePreferences,
+} from "./services/preferenceService";
+
 import "./styles/auth.css";
+import "./styles/preferences.css";
 
 export default function App() {
 
@@ -39,6 +48,20 @@ export default function App() {
   const [error, setError] = useState("");
 
   const [success, setSuccess] = useState("");
+
+  // =====================================================
+  // VECTOR NHU CẦU (PREFERENCES)
+  // =====================================================
+
+  const [preferences, setPreferences] = useState(null);
+
+  const [preferencesLoading, setPreferencesLoading] = useState(false);
+
+  const [preferencesSaving, setPreferencesSaving] = useState(false);
+
+  const [preferencesError, setPreferencesError] = useState("");
+
+  const [preferencesSuccess, setPreferencesSuccess] = useState("");
 
 
   // =====================================================
@@ -343,6 +366,181 @@ export default function App() {
     setError("");
 
     setSuccess("");
+
+  }
+
+
+  // =====================================================
+  // PREFERENCES
+  // =====================================================
+
+  async function fetchPreferences() {
+
+    setPreferencesLoading(true);
+
+    setPreferencesError("");
+
+    try {
+
+      // GET /api/users/me/preferences
+      const data = await getPreferences();
+
+      setPreferences(data);
+
+    } catch (error) {
+
+      console.error(
+
+        "Fetch preferences failed:",
+
+        error
+
+      );
+
+      setPreferencesError(
+
+        error.message ||
+
+        "Không thể tải vector nhu cầu."
+
+      );
+
+    } finally {
+
+      setPreferencesLoading(false);
+
+    }
+
+  }
+
+
+  function showPreferences() {
+
+    setPage("preferences");
+
+    setError("");
+
+    setSuccess("");
+
+    setPreferencesSuccess("");
+
+    setPreferencesError("");
+
+    fetchPreferences();
+
+  }
+
+
+  async function handleSavePreferences(formData) {
+
+    setPreferencesSaving(true);
+
+    setPreferencesError("");
+
+    setPreferencesSuccess("");
+
+    try {
+
+      const payload = {
+
+        interestedSubjects: formData.interestedSubjects,
+
+        habits: formData.habits,
+
+        goals: formData.goals,
+
+        preferredRentalArea: formData.preferredRentalArea,
+
+        monthlyRentalBudget: formData.monthlyRentalBudget,
+
+      };
+
+      // Đã có vector nhu cầu => PUT, chưa có => POST
+      const saved = preferences
+
+        ? await updatePreferences(payload)
+
+        : await createPreferences(payload);
+
+      setPreferences(saved);
+
+      setPreferencesSuccess(
+
+        preferences
+
+          ? "Vector nhu cầu đã được cập nhật."
+
+          : "Vector nhu cầu đã được tạo."
+
+      );
+
+    } catch (error) {
+
+      console.error(
+
+        "Save preferences error:",
+
+        error
+
+      );
+
+      setPreferencesError(
+
+        error.message ||
+
+        "Lưu vector nhu cầu thất bại."
+
+      );
+
+    } finally {
+
+      setPreferencesSaving(false);
+
+    }
+
+  }
+
+
+  async function handleDeletePreferences() {
+
+    setPreferencesSaving(true);
+
+    setPreferencesError("");
+
+    setPreferencesSuccess("");
+
+    try {
+
+      // DELETE /api/users/me/preferences
+      await deletePreferences();
+
+      setPreferences(null);
+
+      setPreferencesSuccess("Vector nhu cầu đã được xóa.");
+
+    } catch (error) {
+
+      console.error(
+
+        "Delete preferences error:",
+
+        error
+
+      );
+
+      setPreferencesError(
+
+        error.message ||
+
+        "Xóa vector nhu cầu thất bại."
+
+      );
+
+    } finally {
+
+      setPreferencesSaving(false);
+
+    }
 
   }
 
@@ -702,6 +900,7 @@ export default function App() {
            user={user}
            onLogout={handleLogout}
            onViewProfile={showProfile}
+           onSetupPreferences={showPreferences}
          />
 
        )}
@@ -791,6 +990,7 @@ export default function App() {
                    onLogout={handleLogout}
                    onEditProfile={showEditProfile}
                    onChangePassword={showChangePassword}
+                   onOpenPreferences={showPreferences}
                    loading={loading}
                    error={error}
                  />
@@ -846,10 +1046,73 @@ export default function App() {
 
          </main>
 
+)}
+
+
+       {/* ================================================
+           TRANG VECTOR NHU CẦU
+       ================================================= */}
+
+       {page === "preferences" && user && (
+
+         <main className="auth-page">
+
+           <div className="auth-background-shape shape-one" />
+
+           <div className="auth-background-shape shape-two" />
+
+
+           <header className="site-header">
+
+             <div className="brand">
+
+               <span className="brand-icon">
+                 C
+               </span>
+
+               <span>
+                 Campus
+                 <span className="brand-highlight">
+                   Ecom
+                 </span>
+               </span>
+
+             </div>
+
+             <span className="header-label">
+               STUDENT COMMUNITY
+             </span>
+
+           </header>
+
+
+           <section className="pref-main">
+
+             <Preferences
+               key={preferences?.id ?? "new"}
+               preferences={preferences}
+               loading={preferencesLoading}
+               saving={preferencesSaving}
+               error={preferencesError}
+               success={preferencesSuccess}
+               onSave={handleSavePreferences}
+               onDelete={handleDeletePreferences}
+               onBack={showProfile}
+             />
+
+           </section>
+
+
+           <footer className="site-footer">
+             CampusEcomSystemMini · Student & Campus Utility
+           </footer>
+
+         </main>
+
        )}
 
 
-     </>
+      </>
 
   );
 }

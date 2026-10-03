@@ -62,7 +62,12 @@ export async function request(path, options = {}) {
           data?.detail ||
           `Yêu cầu thất bại (${response.status})`;
 
-    throw new Error(message);
+    const error = new Error(message);
+
+    // Giữ lại HTTP status để service khác xử lý riêng (ví dụ 404)
+    error.status = response.status;
+
+    throw error;
   }
 
   return data;

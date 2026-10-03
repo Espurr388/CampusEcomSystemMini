@@ -4,6 +4,7 @@ export default function UserProfile({
   onLogout,
   onEditProfile,
   onChangePassword,
+  onOpenPreferences,
   loading,
   error,
 }) {
@@ -75,6 +76,15 @@ export default function UserProfile({
           disabled={loading}
         >
           Đổi mật khẩu
+        </button>
+
+        <button
+          className="btn btn--ghost"
+          type="button"
+          onClick={onOpenPreferences}
+          disabled={loading}
+        >
+          Vector nhu cầu
         </button>
       </div>
 

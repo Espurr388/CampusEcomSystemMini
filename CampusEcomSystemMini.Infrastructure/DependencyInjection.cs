@@ -27,6 +27,10 @@ public static class DependencyInjection
             UserRepository>();
 
         services.AddScoped<
+            IPreferenceRepository,
+            PreferenceRepository>();
+
+        services.AddScoped<
             IPasswordHasher,
             PasswordHasher>();
 

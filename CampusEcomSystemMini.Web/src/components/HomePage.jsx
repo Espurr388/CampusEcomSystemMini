@@ -1,4 +1,9 @@
-export default function HomePage({ user, onLogout, onViewProfile }) {
+export default function HomePage({
+  user,
+  onLogout,
+  onViewProfile,
+  onSetupPreferences,
+}) {
   const fullName =
     user?.fullName ??
     user?.FullName ??
@@ -142,7 +147,10 @@ export default function HomePage({ user, onLogout, onViewProfile }) {
               tính năng Smart Matching.
             </p>
 
-            <button>
+            <button
+              type="button"
+              onClick={onSetupPreferences}
+            >
               Thiết lập
             </button>
 
