@@ -1,0 +1,694 @@
+/* messenger.css — giao diện Messenger (Module 5 · Batch 1) */
+
+.connection-page {
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  color: #17243a;
+
+  background:
+    radial-gradient(circle at 12% 8%, #e1edff 0, transparent 34%),
+    radial-gradient(circle at 88% 92%, #e8e9ff 0, transparent 32%),
+    #f7f9fd;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.connection-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 16px;
+
+  width: min(1100px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding: 22px 0;
+
+  border-bottom: 1px solid #e8edf5;
+}
+
+.connection-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.connection-brand-icon {
+  display: grid;
+
+  width: 42px;
+  height: 42px;
+
+  place-items: center;
+
+  border-radius: 13px;
+
+  color: #ffffff;
+
+  background: #2459d3;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  box-shadow: 0 7px 18px #2459d32b;
+}
+
+.connection-brand strong {
+  display: block;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+.connection-brand strong span {
+  color: #2459d3;
+}
+
+.connection-brand small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #8a96aa;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.connection-header-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.connection-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+.connection-user-avatar,
+.connection-item-avatar {
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+  background: linear-gradient(135deg, #2459d3, #7a8df3);
+
+  font-weight: 800;
+}
+
+.connection-user-avatar {
+  width: 40px;
+  height: 40px;
+
+  font-size: 13px;
+}
+
+.connection-user-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  max-width: 190px;
+}
+
+.connection-user-info strong {
+  font-size: 12px;
+}
+
+.connection-user-info span {
+  color: #7b879b;
+
+  font-size: 10px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.connection-ghost-button {
+  padding: 9px 15px;
+
+  border: 1px solid #e1e6ef;
+
+  border-radius: 9px;
+
+  color: #45536a;
+
+  background: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.connection-ghost-button:hover {
+  border-color: #2459d3;
+
+  color: #2459d3;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.connection-main {
+  width: min(880px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding: 46px 0 60px;
+}
+
+.connection-hero {
+  max-width: 640px;
+
+  margin-bottom: 30px;
+}
+
+.connection-hero h1 {
+  margin: 14px 0 12px;
+
+  color: #17243a;
+
+  font-size: clamp(30px, 4vw, 40px);
+
+  line-height: 1.2;
+
+  letter-spacing: -1.5px;
+}
+
+.connection-hero h1 span {
+  color: #2459d3;
+}
+
+.connection-hero p {
+  margin: 0;
+
+  color: #718097;
+
+  font-size: 13px;
+
+  line-height: 1.9;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.connection-card {
+  margin-bottom: 22px;
+
+  padding: 28px;
+
+  border: 1px solid #e7ebf3;
+
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow: 0 14px 40px #20345c0d;
+}
+
+.connection-card-heading {
+  margin-bottom: 20px;
+}
+
+.connection-card-heading h2 {
+  margin: 0 0 7px;
+
+  color: #17243a;
+
+  font-size: 18px;
+
+  letter-spacing: -0.5px;
+}
+
+.connection-card-heading p {
+  margin: 0;
+
+  color: #7a879d;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+.connection-card-heading--row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 18px;
+
+  flex-wrap: wrap;
+}
+
+
+/* =====================================================
+   GỬI LỜI MỜI
+===================================================== */
+
+.connection-send-form {
+  display: flex;
+
+  gap: 12px;
+}
+
+.connection-input {
+  flex: 1;
+
+  min-width: 0;
+
+  min-height: 48px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #dce3ee;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  color: #17243a;
+
+  background: #fbfcff;
+
+  font-size: 13px;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.connection-input::placeholder {
+  color: #a2acbc;
+}
+
+.connection-input:focus {
+  border-color: #4778e6;
+
+  box-shadow: 0 0 0 3px #4778e61a;
+
+  background: #ffffff;
+}
+
+.connection-primary-button {
+  flex: 0 0 auto;
+
+  min-height: 48px;
+
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  color: #ffffff;
+
+  background: #2459d3;
+
+  box-shadow: 0 8px 18px #2459d32a;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: transform 0.15s, background 0.15s;
+}
+
+.connection-primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background: #1d49b3;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.connection-tabs {
+  display: inline-flex;
+
+  gap: 4px;
+
+  padding: 4px;
+
+  border-radius: 11px;
+
+  background: #f1f3f7;
+}
+
+.connection-tab {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  color: #68758c;
+
+  background: transparent;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: color 0.15s, background 0.15s;
+}
+
+.connection-tab span {
+  display: grid;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 5px;
+
+  place-items: center;
+
+  border-radius: 20px;
+
+  color: #45536a;
+
+  background: #ffffff;
+
+  font-size: 10px;
+}
+
+.connection-tab--active {
+  color: #ffffff;
+
+  background: #2459d3;
+
+  box-shadow: 0 5px 14px #2459d32a;
+}
+
+.connection-tab--active span {
+  color: #2459d3;
+}
+
+
+/* =====================================================
+   DANH SÁCH
+===================================================== */
+
+.connection-list {
+  display: grid;
+
+  gap: 12px;
+
+  margin: 0;
+
+  padding: 0;
+
+  list-style: none;
+}
+
+.connection-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 17px 19px;
+
+  border: 1px solid #edf0f6;
+
+  border-radius: 15px;
+
+  background: #fdfdff;
+
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.connection-item:hover {
+  border-color: #dde5f3;
+
+  box-shadow: 0 8px 22px #20345c0a;
+}
+
+.connection-item-avatar {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+
+  font-size: 14px;
+}
+
+.connection-item-body {
+  display: flex;
+
+  flex: 1;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.connection-item-top {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+.connection-item-top strong {
+  color: #17243a;
+
+  font-size: 13px;
+}
+
+.connection-item-email,
+.connection-item-time {
+  color: #8b97aa;
+
+  font-size: 11px;
+
+  overflow-wrap: anywhere;
+}
+
+.connection-item-time {
+  font-size: 10px;
+}
+
+.connection-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 10px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.connection-status--pending {
+  color: #92400e;
+
+  background: #fef3c7;
+}
+
+.connection-status--accepted {
+  color: #166534;
+
+  background: #dcfce7;
+}
+
+.connection-status--rejected {
+  color: #b42318;
+
+  background: #fee2e2;
+}
+
+.connection-item-actions {
+  display: flex;
+
+  flex: 0 0 auto;
+
+  gap: 9px;
+}
+
+.connection-action {
+  min-width: 82px;
+
+  padding: 9px 14px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  transition: filter 0.15s;
+}
+
+.connection-action:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+
+.connection-action--accept {
+  border: none;
+
+  color: #ffffff;
+
+  background: #2459d3;
+}
+
+.connection-action--reject {
+  border: 1px solid #f0c7c7;
+
+  color: #d94343;
+
+  background: #ffffff;
+}
+
+.connection-item-hint {
+  flex: 0 0 auto;
+
+  color: #a2acbc;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =====================================================
+   LOADING / EMPTY
+===================================================== */
+
+.connection-state {
+  padding: 26px 0;
+
+  color: #687995;
+
+  font-size: 12px;
+
+  text-align: center;
+}
+
+.connection-state--empty {
+  color: #a2acbc;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.connection-footer {
+  margin-top: auto;
+
+  padding: 26px;
+
+  color: #8b97aa;
+
+  font-size: 10px;
+
+  text-align: center;
+
+  border-top: 1px solid #e8edf5;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 760px) {
+
+  .connection-header,
+  .connection-main {
+    width: calc(100% - 32px);
+  }
+
+  .connection-header {
+    flex-wrap: wrap;
+  }
+
+  .connection-user-info {
+    display: none;
+  }
+
+  .connection-card {
+    padding: 22px 18px;
+  }
+
+  .connection-send-form {
+    flex-direction: column;
+  }
+
+  .connection-primary-button {
+    width: 100%;
+  }
+
+  .connection-item {
+    flex-wrap: wrap;
+  }
+
+  .connection-item-actions {
+    width: 100%;
+  }
+
+  .connection-action {
+    flex: 1;
+  }
+
+  .connection-item-hint {
+    width: 100%;
+
+    text-align: right;
+  }
+
+}

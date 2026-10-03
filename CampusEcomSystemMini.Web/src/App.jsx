@@ -10,6 +10,7 @@ import HomePage from "./components/HomePage";
 import UserProfile from "./components/UserProfile";
 import EditProfile from "./components/EditProfile";
 import ChangePassword from "./components/ChangePassword";
+import ConnectionRequests from "./components/messenger/ConnectionRequests";
 
 import {
   getMe,
@@ -27,6 +28,7 @@ import {
 } from "./services/userService";
 
 import "./styles/auth.css";
+import "./styles/messenger.css";
 
 export default function App() {
 
@@ -262,6 +264,36 @@ export default function App() {
   function showRegister() {
 
     setPage("register");
+
+    setError("");
+
+    setSuccess("");
+
+  }
+
+
+  // =====================================================
+  // CHUYỂN TRANG CHỦ
+  // =====================================================
+
+  function showHome() {
+
+    setPage("home");
+
+    setError("");
+
+    setSuccess("");
+
+  }
+
+
+  // =====================================================
+  // KẾT NỐI (MODULE 5)
+  // =====================================================
+
+  function showConnections() {
+
+    setPage("connections");
 
     setError("");
 
@@ -702,6 +734,23 @@ export default function App() {
            user={user}
            onLogout={handleLogout}
            onViewProfile={showProfile}
+           onViewConnections={showConnections}
+         />
+
+       )}
+
+
+       {/* ================================================
+           TRANG KẾT NỐI (MODULE 5 · BATCH 1)
+       ================================================= */}
+
+       {page === "connections" && user && (
+
+         <ConnectionRequests
+           currentUserId={user.id ?? user.Id}
+           user={user}
+           onBackHome={showHome}
+           onLogout={handleLogout}
          />
 
        )}

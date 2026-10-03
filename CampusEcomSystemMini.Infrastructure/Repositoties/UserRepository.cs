@@ -34,6 +34,16 @@ public class UserRepository : IUserRepository
                 cancellationToken);
     }
 
+    public async Task<IReadOnlyList<User>> GetByIdsAsync(
+        IReadOnlyCollection<Guid> ids,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Users
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync(
+                cancellationToken);
+    }
+
     public async Task AddAsync(
         User user,
         CancellationToken cancellationToken)

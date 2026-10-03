@@ -1,4 +1,5 @@
 using CampusEcomSystemMini.Application;
+using CampusEcomSystemMini.Api.Middleware;
 using CampusEcomSystemMini.Infrastructure;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -144,6 +145,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("FrontendPolicy");
+
+// Chuyển lỗi nghiệp vụ thành HTTP status code phù hợp
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Đọc và xác thực JWT
 app.UseAuthentication();

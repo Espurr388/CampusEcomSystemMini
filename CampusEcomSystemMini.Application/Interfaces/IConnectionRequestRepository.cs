@@ -2,27 +2,27 @@ using CampusEcomSystemMini.Domain.Entities;
 
 namespace CampusEcomSystemMini.Application.Interfaces;
 
-public interface IUserRepository
+public interface IConnectionRequestRepository
 {
-    Task<User?> GetByEmailAsync(
-        string email,
-        CancellationToken cancellationToken);
-
-
-    Task<User?> GetByIdAsync(
+    Task<ConnectionRequest?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<User>> GetByIdsAsync(
-        IReadOnlyCollection<Guid> ids,
+    Task<bool> ExistsPendingBetweenUsersAsync(
+        Guid firstUserId,
+        Guid secondUserId,
+        CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<ConnectionRequest>> GetForUserAsync(
+        Guid userId,
         CancellationToken cancellationToken);
 
     Task AddAsync(
-        User user,
+        ConnectionRequest connectionRequest,
         CancellationToken cancellationToken);
 
     void UpdateAsync(
-        User user,
+        ConnectionRequest connectionRequest,
         CancellationToken cancellationToken);
 
     Task SaveChangesAsync(

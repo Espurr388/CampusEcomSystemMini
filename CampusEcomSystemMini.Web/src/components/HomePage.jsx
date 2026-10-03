@@ -1,4 +1,9 @@
-export default function HomePage({ user, onLogout, onViewProfile }) {
+export default function HomePage({
+  user,
+  onLogout,
+  onViewProfile,
+  onViewConnections,
+}) {
   const fullName =
     user?.fullName ??
     user?.FullName ??
@@ -164,7 +169,7 @@ export default function HomePage({ user, onLogout, onViewProfile }) {
               những sinh viên khác.
             </p>
 
-            <button>
+            <button onClick={onViewConnections}>
               Mở Messenger
             </button>
 
