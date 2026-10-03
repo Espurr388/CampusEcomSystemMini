@@ -11,6 +11,7 @@ import UserProfile from "./components/UserProfile";
 import EditProfile from "./components/EditProfile";
 import ChangePassword from "./components/ChangePassword";
 import Preferences from "./components/Preferences";
+import PostsPage from "./components/PostsPage";
 
 import {
   getMe,
@@ -34,8 +35,18 @@ import {
   deletePreferences,
 } from "./services/preferenceService";
 
+import {
+  getPosts,
+  getMyPosts,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+} from "./services/postService";
+
 import "./styles/auth.css";
 import "./styles/preferences.css";
+import "./styles/posts.css";
 
 export default function App() {
 
@@ -62,6 +73,34 @@ export default function App() {
   const [preferencesError, setPreferencesError] = useState("");
 
   const [preferencesSuccess, setPreferencesSuccess] = useState("");
+
+  // =====================================================
+  // BÀI ĐĂNG (POSTS)
+  // =====================================================
+
+  const [postMode, setPostMode] = useState("all");
+
+  const [posts, setPosts] = useState([]);
+
+  const [postsLoading, setPostsLoading] = useState(false);
+
+  const [postsSaving, setPostsSaving] = useState(false);
+
+  const [postsError, setPostsError] = useState("");
+
+  const [postsSuccess, setPostsSuccess] = useState("");
+
+  const [postFormOpen, setPostFormOpen] = useState(false);
+
+  const [editingPost, setEditingPost] = useState(null);
+
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const [detailPost, setDetailPost] = useState(null);
+
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  const [detailError, setDetailError] = useState("");
 
 
   // =====================================================
@@ -669,6 +708,276 @@ export default function App() {
 
 
   // =====================================================
+  // BÀI ĐĂNG (POSTS)
+  // =====================================================
+
+  async function fetchPosts(mode) {
+
+    setPostsLoading(true);
+
+    setPostsError("");
+
+    try {
+
+      // GET /api/posts hoặc GET /api/posts/me
+      const data =
+        mode === "mine" ? await getMyPosts() : await getPosts();
+
+      setPosts(data);
+
+    } catch (error) {
+
+      console.error(
+
+        "Fetch posts failed:",
+
+        error
+
+      );
+
+      setPostsError(
+
+        error.message ||
+
+        "Không thể tải danh sách bài đăng."
+
+      );
+
+    } finally {
+
+      setPostsLoading(false);
+
+    }
+
+  }
+
+
+  function showPosts(mode) {
+
+    const targetMode = mode || "all";
+
+    setPage("posts");
+
+    setError("");
+
+    setSuccess("");
+
+    setPostMode(targetMode);
+
+    setPostsSuccess("");
+
+    setPostFormOpen(false);
+
+    setDetailOpen(false);
+
+    fetchPosts(targetMode);
+
+  }
+
+
+  function showMyPosts() {
+
+    showPosts("mine");
+
+  }
+
+
+  function switchPostMode() {
+
+    showPosts(postMode === "mine" ? "all" : "mine");
+
+  }
+
+
+  function openPostForm(post) {
+
+    setEditingPost(post || null);
+
+    setPostFormOpen(true);
+
+    setPostsError("");
+
+    setPostsSuccess("");
+
+    setDetailOpen(false);
+
+  }
+
+
+  function closePostForm() {
+
+    setPostFormOpen(false);
+
+    setEditingPost(null);
+
+  }
+
+
+  async function handleSubmitPost(formData) {
+
+    setPostsSaving(true);
+
+    setPostsError("");
+
+    setPostsSuccess("");
+
+    try {
+
+      if (editingPost) {
+
+        // PUT /api/posts/{id}
+        await updatePost(editingPost.id, formData);
+
+        setPostsSuccess("Bài đăng đã được cập nhật.");
+
+      } else {
+
+        // POST /api/posts
+        await createPost(formData);
+
+        setPostsSuccess("Bài đăng đã được tạo.");
+
+      }
+
+      closePostForm();
+
+      await fetchPosts(postMode);
+
+    } catch (error) {
+
+      console.error(
+
+        "Save post error:",
+
+        error
+
+      );
+
+      setPostsError(
+
+        error.message ||
+
+        "Lưu bài đăng thất bại."
+
+      );
+
+    } finally {
+
+      setPostsSaving(false);
+
+    }
+
+  }
+
+
+  async function handleDeletePost(post) {
+
+    const confirmed = window.confirm(
+      "Xóa bài đăng này? Hành động không thể hoàn tác."
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setPostsSaving(true);
+
+    setPostsError("");
+
+    setPostsSuccess("");
+
+    try {
+
+      // DELETE /api/posts/{id}
+      await deletePost(post.id);
+
+      setDetailOpen(false);
+
+      setPostsSuccess("Bài đăng đã được xóa.");
+
+      await fetchPosts(postMode);
+
+    } catch (error) {
+
+      console.error(
+
+        "Delete post error:",
+
+        error
+
+      );
+
+      setPostsError(
+
+        error.message ||
+
+        "Xóa bài đăng thất bại."
+
+      );
+
+    } finally {
+
+      setPostsSaving(false);
+
+    }
+
+  }
+
+
+  async function handleOpenPostDetail(postId) {
+
+    setDetailOpen(true);
+
+    setDetailLoading(true);
+
+    setDetailError("");
+
+    setDetailPost(null);
+
+    try {
+
+      // GET /api/posts/{id}
+      const data = await getPostById(postId);
+
+      setDetailPost(data);
+
+    } catch (error) {
+
+      console.error(
+
+        "Fetch post detail failed:",
+
+        error
+
+      );
+
+      setDetailError(
+
+        error.message ||
+
+        "Không tìm thấy bài đăng."
+
+      );
+
+    } finally {
+
+      setDetailLoading(false);
+
+    }
+
+  }
+
+
+  function closePostDetail() {
+
+    setDetailOpen(false);
+
+    setDetailPost(null);
+
+  }
+
+
+  // =====================================================
   // RENDER
   // =====================================================
 
@@ -901,7 +1210,84 @@ export default function App() {
            onLogout={handleLogout}
            onViewProfile={showProfile}
            onSetupPreferences={showPreferences}
+           onViewMyPosts={showMyPosts}
          />
+
+       )}
+
+
+       {/* ================================================
+           TRANG BÀI ĐĂNG
+       ================================================= */}
+
+       {page === "posts" && user && (
+
+         <main className="auth-page">
+
+           <div className="auth-background-shape shape-one" />
+
+           <div className="auth-background-shape shape-two" />
+
+
+           <header className="site-header">
+
+             <div className="brand">
+
+               <span className="brand-icon">
+                 C
+               </span>
+
+               <span>
+                 Campus
+                 <span className="brand-highlight">
+                   Ecom
+                 </span>
+               </span>
+
+             </div>
+
+             <span className="header-label">
+               STUDENT COMMUNITY
+             </span>
+
+           </header>
+
+
+           <section className="pref-main">
+
+             <PostsPage
+               mode={postMode}
+               posts={posts}
+               user={user}
+               loading={postsLoading}
+               saving={postsSaving}
+               error={postsError}
+               success={postsSuccess}
+               formOpen={postFormOpen}
+               formPost={editingPost}
+               detailOpen={detailOpen}
+               detailPost={detailPost}
+               detailLoading={detailLoading}
+               detailError={detailError}
+               onCreate={() => openPostForm(null)}
+               onEdit={openPostForm}
+               onDelete={handleDeletePost}
+               onSubmitPost={handleSubmitPost}
+               onOpenDetail={handleOpenPostDetail}
+               onCloseForm={closePostForm}
+               onCloseDetail={closePostDetail}
+               onSwitchMode={switchPostMode}
+               onBack={showProfile}
+             />
+
+           </section>
+
+
+           <footer className="site-footer">
+             CampusEcomSystemMini · Student & Campus Utility
+           </footer>
+
+         </main>
 
        )}
 
@@ -991,6 +1377,7 @@ export default function App() {
                    onEditProfile={showEditProfile}
                    onChangePassword={showChangePassword}
                    onOpenPreferences={showPreferences}
+                   onViewMyPosts={showMyPosts}
                    loading={loading}
                    error={error}
                  />

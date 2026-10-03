@@ -3,6 +3,7 @@ export default function HomePage({
   onLogout,
   onViewProfile,
   onSetupPreferences,
+  onViewMyPosts,
 }) {
   const fullName =
     user?.fullName ??
@@ -125,7 +126,10 @@ export default function HomePage({
               tìm kiếm và chia sẻ thông tin.
             </p>
 
-            <button>
+            <button
+              type="button"
+              onClick={onViewMyPosts}
+            >
               Xem bài đăng
             </button>
 

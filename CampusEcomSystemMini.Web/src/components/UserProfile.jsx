@@ -5,6 +5,7 @@ export default function UserProfile({
   onEditProfile,
   onChangePassword,
   onOpenPreferences,
+  onViewMyPosts,
   loading,
   error,
 }) {
@@ -85,6 +86,15 @@ export default function UserProfile({
           disabled={loading}
         >
           Vector nhu cầu
+        </button>
+
+        <button
+          className="btn btn--ghost"
+          type="button"
+          onClick={onViewMyPosts}
+          disabled={loading}
+        >
+          Bài đăng của tôi
         </button>
       </div>
 
